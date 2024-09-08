@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Display Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Book Display Project</h1>
+    <p><strong>Your Name:</strong> Sulaiman</p>
+    <p><strong>Affiliation:</strong> Kennesaw State University, IT Department</p>
+    <p><strong>Description:</strong> This project demonstrates the process of reading and displaying JSON data related to books using JavaScript/jQuery.</p>
+    <p><strong>Course Information:</strong> <a href="http://ccse.kennesaw.edu/it">KSU IT Department</a></p>
+
+    <h2>Table of Contents</h2>
+    <table>
+        <tr>
+            <th>Milestone</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><a href="#">Milestone 1</a></td>
+            <td>JSON data validation and basic webpage setup.</td>
+        </tr>
+        <tr>
+            <td><a href="#">Milestone 2</a></td>
+            <td>Reading and displaying a single book's data.</td>
+        </tr>
+        <tr>
+            <td><a href="#">Milestone 3</a></td>
+            <td>Displaying a list of books from JSON search results.</td>
+        </tr>
+        <tr>
+            <td><a href="#">Milestone 4</a></td>
+            <td>Integration with OpenLibrary API and bonus challenge.</td>
+        </tr>
+    </table>
+
+</body>
+</html>
