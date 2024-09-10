@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone 1 - Book List</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h1>Milestone 1 - Book List</h1>
+
+    <div class="book-list" id="book-list"></div>
+
+    <footer>
+        <p>Source: <a href="https://books.google.com" target="_blank">Google Books API</a></p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            
+            $.getJSON('https://www.googleapis.com/books/v1/volumes?q=modern%20web', function(data) {
+                const books = data.items;
+
+               
+                $.each(books, function(index, book) {
+                    const title = book.volumeInfo.title || 'Title not available';
+                    const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Author not available';
+                    const publishedDate = book.volumeInfo.publishedDate || 'Date not available';
+                    const description = book.volumeInfo.description || 'Description not available';
+                    const thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/128x192';
+
+                    $('#book-list').append(`
+                        <div class="book">
+                            <img src="${thumbnail}" alt="${title} Cover">
+                            <h3>${title}</h3>
+                            <p><strong>Author(s):</strong> ${authors}</p>
+                            <p><strong>Published Date:</strong> ${publishedDate}</p>
+                            <p>${description}</p>
+                        </div>
+                    `);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
