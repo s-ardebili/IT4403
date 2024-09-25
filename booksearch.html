@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Search</title>
+    <nav class="homepage-link">
+        <a href="index.html">HomePage</a>
+    </nav>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .book { display: inline-block; margin: 10px; text-align: center; }
+        .pagination { margin-top: 20px; }
+        .pagination button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Book Search</h1>
+
+
+    <form id="search-form">
+        <input type="text" id="search-query" placeholder="Enter book title " required>
+        <button type="submit">Search</button>
+    </form>
+
+
+    <div id="results"></div>
+
+ 
+    <div class="pagination">
+        <button id="prev-page" disabled>Previous</button>
+        <button id="next-page" disabled>Next</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const apiKey = 'AIzaSyClbHif11Rn22FdgNV8frsFh2VdH2cQCzY';  // Google Books API key
+            const maxResults = 10; 
+            let startIndex = 0; 
+            let query = '';  
+            let totalResults = 60;  // Total number of results 
+
+            
+            function fetchBooks() {
+                const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&startIndex=${startIndex}&maxResults=${maxResults}&key=${apiKey}`;
+
+                $.get(apiUrl, function(data) {
+                    const books = data.items;
+                    totalResults = data.totalItems;  // Update total results
+                    $('#results').empty();
+
+                    if (books && books.length > 0) {
+                        books.forEach(book => {
+                            const title = book.volumeInfo.title;
+                            const bookId = book.id;
+                            const thumbnail = book.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/150';
+                            const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown author';
+                            $('#results').append(`
+                                <div class="book">
+                                    <img src="${thumbnail}" alt="${title}">
+                                    <h3><a href="bookdetails.html?bookId=${bookId}">${title}</a></h3>  <!-- Updated Link -->
+                                    <p>Author(s): ${authors}</p>
+                                </div>
+                            `);
+
+
+                        
+                        });
+
+                       
+                        $('#prev-page').prop('disabled', startIndex === 0);
+                        $('#next-page').prop('disabled', startIndex + maxResults >= totalResults);
+                    } else {
+                        $('#results').html('<p>No books found.</p>');
+                    }
+                });
+            }
+
+        
+            $('#search-form').submit(function(event) {
+                event.preventDefault();
+                query = $('#search-query').val().trim();  
+                startIndex = 0;
+                fetchBooks();  
+            });
+
+        
+            $('#next-page').click(function() {
+                startIndex += maxResults;
+                fetchBooks();
+            });
+
+           
+            $('#prev-page').click(function() {
+                startIndex -= maxResults;
+                fetchBooks();
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+</html>
