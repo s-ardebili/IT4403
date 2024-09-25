@@ -42,8 +42,6 @@
                     <p><strong>Published Date:</strong> ${publishedDate}</p>
                     <p><strong>Description:</strong> ${description}</p>
                 `);
-            }).fail(function() {
-                $('#book-details').html('<p>Failed to fetch book details. Please try again later.</p>');
             });
         });
     </script>
