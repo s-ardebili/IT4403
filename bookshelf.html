@@ -3,53 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookshelf</title>
+    <title>Bookshelf</title>
+    <nav class="homepage-link">
+        <a href="index.html">HomePage</a>
+    </nav>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
+    <style>
+        .book { display: inline-block; margin: 10px; text-align: center; }
+        .book img { width: 150px; height: 200px; }
+    </style>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="bookshelf.html">My Bookshelf</a>
-    </nav>
 
     <h1>My Bookshelf</h1>
 
-    <div class="bookshelf-container" id="bookshelf">
-        <!-- Books will be displayed here -->
-    </div>
+    <div id="bookshelf"></div>
 
     <script>
         $(document).ready(function() {
-            const bookshelfId = "YOUR_BOOKSHELF_ID";  // Replace with your actual bookshelf ID
-            const apiKey = "AIzaSyClbHif11Rn22FdgNV8frsFh2VdH2cQCzY";  
-            const apiUrl = `https://www.googleapis.com/books/v1/mylibrary/bookshelves/${bookshelfId}/volumes?key=${apiKey}`;
+            const userId = '117694587211474373024';  
+            const bookshelfId = '1001';  
+            const apiKey = 'AIzaSyClbHif11Rn22FdgNV8frsFh2VdH2cQCzY';  
+
+            // Fetch books from the bookshelf
+            const apiUrl = `https://www.googleapis.com/books/v1/users/${userId}/bookshelves/${bookshelfId}/volumes?key=${apiKey}`;
 
             $.get(apiUrl, function(data) {
                 const books = data.items;
+                $('#bookshelf').empty();
 
                 if (books && books.length > 0) {
                     books.forEach(book => {
-                        const bookTitle = book.volumeInfo.title;
+                        const title = book.volumeInfo.title;
                         const bookId = book.id;
-                        const bookImage = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/150';
-
+                        const thumbnail = book.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/150';
+                        const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown author';
                         $('#bookshelf').append(`
                             <div class="book">
-                                <img src="${bookImage}" alt="${bookTitle}">
-                                <div class="book-title">
-                                    <a href="details.html?bookId=${bookId}">${bookTitle}</a>
-                                </div>
+                                <img src="${thumbnail}" alt="${title}">
+                                <h3><a href="bookdetails.html?bookId=${bookId}">${title}</a></h3>
+                                <p>Author(s): ${authors}</p>
                             </div>
                         `);
                     });
                 } else {
-                    $('#bookshelf').html('<p>No books found in this bookshelf.</p>');
+                    $('#bookshelf').html('<p>No books found on this shelf.</p>');
                 }
             }).fail(function() {
-                $('#bookshelf').html('<p>Failed to fetch the bookshelf data. Please check the API key and bookshelf ID.</p>');
+                $('#bookshelf').html('<p>Error fetching data from Google Books API. Please try again later.</p>');
             });
         });
     </script>
+
 </body>
 </html>
+
