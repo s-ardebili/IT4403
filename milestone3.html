@@ -8,21 +8,21 @@
         <a href="index.html">HomePage</a>
     </nav>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="milestone3.css"> 
+    <link rel="stylesheet" href="m3results.css"> 
    
 </head>
 <body>
 
-    <h1>Milestone 3 - Book Search</h1>
+    <h1>Book Search Results</h1>
 
-    <input type="text" id="search-box" placeholder="Search...">
+    <input type="text" id="search-box" placeholder="Search for books...">
     <button id="search-btn">Search</button>
 
     <div id="results"></div>
     <div id="pagination"></div>
-    <div id="book-details" class="details-section"></div> 
+    <div id="book-details" class="details-section"></div> <!-- Section for book details -->
 
-    <h2>My Bookshelf</h2> 
+    <h2>Your Bookshelf</h2> <!-- Bookshelf section -->
     <div id="bookshelf"></div>
 
     <script>
@@ -30,14 +30,14 @@
         let currentPage = 1;
         let totalItems = 0;
 
-       
+        // Google Books API user and bookshelf IDs
         const userId = '117694587211474373024';
         const bookshelfId = '1001';  
         const apiKey = 'AIzaSyClbHif11Rn22FdgNV8frsFh2VdH2cQCzY'; 
 
         $(document).ready(function() {
-          
-            $('#search-button').click(function() {
+            // Event listener for the search button
+            $('#search-btn').click(function() {
                 const searchTerm = $('#search-box').val();
                 if (searchTerm) {
                     fetchBooks(searchTerm, currentPage);
@@ -48,13 +48,13 @@
                 }
             });
 
-            
+            // Fetch books based on search term
             function fetchBooks(searchTerm, page) {
                 const startIndex = (page - 1) * maxResultsPerPage;
                 const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=${maxResultsPerPage}`;
 
                 $.get(url, function(data) {
-                    totalItems = data.totalItems; 
+                    totalItems = data.totalItems; // Save total items for pagination
                     displayResults(data.items);
                     setupPagination(totalItems);
                 }).fail(function() {
@@ -62,7 +62,7 @@
                 });
             }
 
-        
+            // Display search results
             function displayResults(books) {
                 $('#results').empty();
                 if (books) {
@@ -79,7 +79,7 @@
                         `);
                     });
 
-                  
+                    // Add click event listener to each book element
                     $('.book').click(function() {
                         const bookId = $(this).data('id');
                         displayBookDetails(bookId);
@@ -89,7 +89,7 @@
                 }
             }
 
-        
+            // Display book details
             function displayBookDetails(bookId) {
                 const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
 
@@ -108,7 +108,7 @@
                 });
             }
 
-           
+            // Set up pagination
             function setupPagination(totalItems) {
                 const paginationDiv = $('#pagination');
                 paginationDiv.empty();
@@ -121,13 +121,13 @@
                 }
 
                 // Add event listeners to the page buttons
-                $('.page-button').click(function() {
+                $('.page-btn').click(function() {
                     currentPage = $(this).data('page');
                     fetchBooks($('#search-box').val(), currentPage);
                 });
             }
 
-          
+            // Fetch books from the public bookshelf
             function fetchBookshelf() {
                 const apiUrl = `https://www.googleapis.com/books/v1/users/${userId}/bookshelves/${bookshelfId}/volumes?key=${apiKey}`;
 
@@ -150,7 +150,7 @@
                             `);
                         });
 
-                      
+                        // Add click event listener to each bookshelf book element
                         $('.book[data-id]').click(function() {
                             const bookId = $(this).data('id');
                             displayBookDetails(bookId);
@@ -169,6 +169,8 @@
     </script>
 
 </body>
+</html>
+
 </html>
 
 
