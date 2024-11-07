@@ -1,3 +1,14 @@
+.homepage-link {
+    margin-bottom: 30px; 
+}
+
+
+.homepage-link a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    font-size: 1.2rem; 
+}
 
     #results, #bookshelf {
         display: grid;
